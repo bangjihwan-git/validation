@@ -33,7 +33,7 @@ public class ValidationItemControllerV1 {
     }
 
     @GetMapping("/{itemId}")
-    public String item(@PathVariable long itemId, Model model) {
+    public String item(@PathVariable("itemId") long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "validation/v1/item";
@@ -84,14 +84,14 @@ public class ValidationItemControllerV1 {
     }
 
     @GetMapping("/{itemId}/edit")
-    public String editForm(@PathVariable Long itemId, Model model) {
+    public String editForm(@PathVariable("itemId") Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "validation/v1/editForm";
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+    public String edit(@PathVariable("itemId") Long itemId, @ModelAttribute Item item) {
         itemRepository.update(itemId, item);
         return "redirect:/validation/v1/items/{itemId}";
     }
