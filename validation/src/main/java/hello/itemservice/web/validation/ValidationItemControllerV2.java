@@ -194,7 +194,7 @@ public class ValidationItemControllerV2 {
     	//성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
-        redirectAttributes.addAttribute("status", true);
+        redirectAttributes.addAttribute("status", true);  
         return "redirect:/validation/v2/items/{itemId}";
     }
 
