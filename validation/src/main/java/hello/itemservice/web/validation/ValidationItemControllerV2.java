@@ -1,6 +1,5 @@
 package hello.itemservice.web.validation;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +42,6 @@ public class ValidationItemControllerV2 {
     @GetMapping
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();
-        model.addAttribute("items", items);
         return "validation/v2/items";
     }
 
@@ -80,9 +77,9 @@ public class ValidationItemControllerV2 {
     	
     	//특정 필드가 아닌 복합 룰 검증
     	if(item.getPrice() != null && item.getQuantity() != null) {
-    		int reusltPrice = item.getPrice() * item.getQuantity();
-    		if(reusltPrice < 10000) {
-    			bindingResult.addError(new ObjectError("item", "가격 * 수량의 합은 10,000원 이상이어야 합니다. 현재 값 = " + reusltPrice));
+    		int resultPrice = item.getPrice() * item.getQuantity();
+    		if(resultPrice < 10000) {
+    			bindingResult.addError(new ObjectError("item", "가격 * 수량의 합은 10,000원 이상이어야 합니다. 현재 값 = " + resultPrice));
     		}
     	}
     	
@@ -115,9 +112,9 @@ public class ValidationItemControllerV2 {
     	
     	//특정 필드가 아닌 복합 룰 검증
     	if(item.getPrice() != null && item.getQuantity() != null) {
-    		int reusltPrice = item.getPrice() * item.getQuantity();
-    		if(reusltPrice < 10000) {
-    			bindingResult.addError(new ObjectError("item", null, null, "가격 * 수량의 합은 10,000원 이상이어야 합니다. 현재 값 = " + reusltPrice));
+    		int resultPrice = item.getPrice() * item.getQuantity();
+    		if(resultPrice < 10000) {
+    			bindingResult.addError(new ObjectError("item", null, null, "가격 * 수량의 합은 10,000원 이상이어야 합니다. 현재 값 = " + resultPrice));
     		}
     	}
     	
@@ -152,9 +149,9 @@ public class ValidationItemControllerV2 {
     	
     	//특정 필드가 아닌 복합 룰 검증
     	if(item.getPrice() != null && item.getQuantity() != null) {
-    		int reusltPrice = item.getPrice() * item.getQuantity();
-    		if(reusltPrice < 10000) {
-    			bindingResult.addError(new ObjectError("item", new String[] {"totalPriceMin"}, new Object[] {10000, reusltPrice}, null));
+    		int resultPrice = item.getPrice() * item.getQuantity();
+    		if(resultPrice < 10000) {
+    			bindingResult.addError(new ObjectError("item", new String[] {"totalPriceMin"}, new Object[] {10000, resultPrice}, null));
     		}
     	}
     	
@@ -171,32 +168,6 @@ public class ValidationItemControllerV2 {
         return "redirect:/validation/v2/items/{itemId}";
     }
     
-<<<<<<< Upstream, based on branch 'master' of https://github.com/bangjihwan-git/validation.git
-    @PostMapping("/add")
-    public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-    	
-    	log.info("objectName={}", bindingResult.getObjectName());
-    	log.info("target={}", bindingResult.getTarget());
-    	//검증 로직
-    	if(!StringUtils.hasText(item.getItemName())) {
-    		bindingResult.rejectValue("itemName", "required");
-    	}
-    	if(item.getPrice() == null || item.getPrice() < 1000 || item.getPrice()> 1000000) {
-    		bindingResult.rejectValue("price", "range", new Object[]{1000, 1000000}, null);
-    	}
-    	if(item.getQuantity() == null || item.getQuantity() >= 9999) {
-    		bindingResult.rejectValue("quantity", "max", new Object[]{9999}, null);
-    	}
-    	
-    	
-    	//특정 필드가 아닌 복합 룰 검증
-    	if(item.getPrice() != null && item.getQuantity() != null) {
-    		int reusltPrice = item.getPrice() * item.getQuantity();
-    		if(reusltPrice < 10000) {
-    			bindingResult.reject("totalPriceMin", new Object[] {10000, reusltPrice}, null);
-    		}
-    	}
-=======
 //    @PostMapping("/add")
     public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
     	
@@ -220,9 +191,9 @@ public class ValidationItemControllerV2 {
     	
     	//특정 필드가 아닌 복합 룰 검증
     	if(item.getPrice() != null && item.getQuantity() != null) {
-    		int reusltPrice = item.getPrice() * item.getQuantity();
-    		if(reusltPrice < 10000) {
-    			bindingResult.reject("totalPriceMin", new Object[] {10000, reusltPrice}, null);
+    		int resultPrice = item.getPrice() * item.getQuantity();
+    		if(resultPrice < 10000) {
+    			bindingResult.reject("totalPriceMin", new Object[] {10000, resultPrice}, null);
     		}
     	}
     	// 검증에 실패하면 다시 입력 폼으로
@@ -243,7 +214,6 @@ public class ValidationItemControllerV2 {
     	
     	itemValidator.validate(item, bindingResult);
     	
->>>>>>> f057439 커밋
     	// 검증에 실패하면 다시 입력 폼으로
     	if(bindingResult.hasErrors()) {
     		log.info("errors={}", bindingResult);
